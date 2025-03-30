@@ -71,9 +71,9 @@ app.post('/api/books', (req, res) => {
 // PUT
 app.put('/api/books/:id', (req, res) => {
   const bookId = req.params.id;
-  const { name, category } = req.body;
+  const { image, name, category } = req.body;
 
-  if (!name && !category) {
+  if (!image && !name && !category) {
     return res.status(400).json({ error: 'Data is missing!' });
   }
 
@@ -83,13 +83,26 @@ app.put('/api/books/:id', (req, res) => {
     return res.status(404).json({ error: 'Book does not exist!' });
   }
 
+  bookData.image = image || bookData.image;
   bookData.name = name || bookData.name;
   bookData.category = category || bookData.category;
 
   res.json({ message: 'Book is updated!' });
 });
 
-// DELETE
+// DELETE - WHY IT DOES NOT WORK??
+app.delete('/api/books/:id', (req, res) => {
+  const bookId = Number(req.params.id);
+  const initialLength = books.length;
+
+  books = books.filter((book) => book.id !== bookId);
+
+  if (books.length === initialLength) {
+    return res.status(404).json({ error: 'Book is not found' });
+  }
+
+  res.json({ message: 'Book is deleted' });
+});
 
 app.listen(PORT, () => {
   console.log(`Server is on: http://localhost:${PORT}`);

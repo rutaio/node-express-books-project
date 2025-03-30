@@ -10,6 +10,18 @@
   <body>
     <section>
       <h1>Welcome to Rare Books Library!</h1>
+      <div>
+        <form>
+          <input type="text" placeholder="Add Book Image URL" id="new-book-image" />
+          <input type="text" placeholder="Add Book Title" id="new-book-name" />
+          <input
+            type="text"
+            placeholder="Add Book Category"
+            id="new-book-category"
+          />
+          <button id="add-book-btn">Add This Book!</button>
+        </form>
+      </div>
       <button id="get-books-btn">Reveal All Books!</button>
       <div id="books-container">
         <!-- this code indicates what I want to show after loop works in script.js and when server.js gives data from API:
@@ -19,18 +31,6 @@
             <h6 class="book-cat">My category goes here</h6>
             <button></button>
           </div> -->
-      </div>
-      <div>
-        <h2>Add Your Favorite Book!</h2>
-        <form>
-          <input type="text" placeholder="Add Book Title" id="new-book-name" />
-          <input
-            type="text"
-            placeholder="Add Book Category"
-            id="new-book-category"
-          />
-          <button id="add-book-btn">Add This Book!</button>
-        </form>
       </div>
     </section>
   </body>

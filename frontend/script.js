@@ -2,6 +2,7 @@ const api = 'http://localhost:3000/api/books';
 const allBooksButton = document.getElementById('get-books-btn');
 const addNewBook = document.getElementById('add-book-btn');
 
+// GET - all books:
 // when a button is clicked, data from API should come:
 allBooksButton.addEventListener('click', async () => {
   try {
@@ -15,7 +16,7 @@ allBooksButton.addEventListener('click', async () => {
   }
 });
 
-// GET - show a book by ID:
+// GET - show a single book by ID:
 async function singleBookClick(id) {
   const response = await fetch(`${api}/${id}`);
   const book = await response.json();
@@ -33,22 +34,52 @@ async function singleBookClick(id) {
 
 // POST - add a new book to a list of all books:
 addNewBook.addEventListener('click', async () => {
+  const image = document.getElementById('new-book-image').value;
   const name = document.getElementById('new-book-name').value;
   const category = document.getElementById('new-book-category').value;
-  const response = await fetch(`${api}/${id}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      name: name,
-      category: category,
-    }),
-  });
 
-  // ??? BUT WHY THIS DATA DOES NOT COME UP???
+  try {
+    const response = await fetch(api, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        image,
+        name,
+        category,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Adding a book did not work!');
+    }
+  } catch (error) {
+    console.error('Error in adding a book');
+    alert('Error in adding a book!');
+  }
+
   console.log(response);
 });
+
+// PUT
+// ?
+
+// DELETE - WHY IT DOES NOT WORK??
+async function deleteStudent(id) {
+  try {
+    const response = await fetch(`${apiUrl}/${id}`, {
+      method: 'DELETE',
+    });
+
+    if (!response.ok) {
+      throw new Error('Deleting this book did not work!');
+    }
+  } catch (error) {
+    console.error('Error in deleting a single book...');
+    alert('Error in deleting a single book...');
+  }
+}
 
 // this function shows books data as cards in html:
 function displayBooks(books) {
@@ -64,6 +95,7 @@ function displayBooks(books) {
       <h3>${book.name}</h3>
       <h6>${book.category}</h6>
       <button id="single-book-btn" onclick="singleBookClick(${book.id})">Open This Book</button>
+      <button id="delete-single-book-btn" onclick="deleteSingleBook(${book.id})">Delete</button>
       `;
     booksContainer.appendChild(bookCard);
   });
