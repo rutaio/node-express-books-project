@@ -92,12 +92,11 @@ app.put('/api/books/:id', (req, res) => {
 
 // DELETE - WHY IT DOES NOT WORK??
 app.delete('/api/books/:id', (req, res) => {
-  const bookId = Number(req.params.id);
-  const initialLength = books.length;
+  // filter a book by ID and it will be gone, what remains is only those books which are not equal to id we look for:
+  books = books.filter((book) => book.id !== Number(req.params.id));
 
-  books = books.filter((book) => book.id !== bookId);
-
-  if (books.length === initialLength) {
+  // is this validation correct below?
+  if (!books) {
     return res.status(404).json({ error: 'Book is not found' });
   }
 

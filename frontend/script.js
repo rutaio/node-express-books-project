@@ -29,6 +29,8 @@ async function singleBookClick(id) {
   // ??? HOW TO SEND PEOPLE SOMEWHERE AFTER A CLICK???
   console.log(book);
 
+  // is this function needed here?
+  // or perhaps instead it should open a card with content of that book?
   displayBooks([book]);
 }
 
@@ -62,15 +64,37 @@ addNewBook.addEventListener('click', async () => {
   console.log(response);
 });
 
-// PUT
-// ?
+// PATCH - edit a book based on ID:
+// NOT FINISHED ...
+async function editSingleBook(id, name, category) {
+  const newName = prompt('New book name:', name);
+  const newCategory = prompt('New book category:', category);
 
-// DELETE - WHY IT DOES NOT WORK??
-async function deleteStudent(id) {
+  if (newName || newCategory) {
+    try {
+      const response = await fetch(`${apiUrl}/${id}`, {
+        method: 'PATCH', 
+        headers: {'Content-Type': 'application/json'}, 
+        body: JSON.stringify({
+          name: name,
+          category: category,
+        }),
+      });
+    }
+  }
+}
+
+// DELETE - WHY error is caught?
+async function deleteSingleBook(id) {
   try {
     const response = await fetch(`${apiUrl}/${id}`, {
       method: 'DELETE',
     });
+
+    // reload and show the latest books:
+    // does this work?
+    await response.json();
+    displayBooks(books);
 
     if (!response.ok) {
       throw new Error('Deleting this book did not work!');
@@ -95,6 +119,7 @@ function displayBooks(books) {
       <h3>${book.name}</h3>
       <h6>${book.category}</h6>
       <button id="single-book-btn" onclick="singleBookClick(${book.id})">Open This Book</button>
+      <button id="single-book-btn" onclick="editSingleBook(${book.id})">Edit</button>
       <button id="delete-single-book-btn" onclick="deleteSingleBook(${book.id})">Delete</button>
       `;
     booksContainer.appendChild(bookCard);
